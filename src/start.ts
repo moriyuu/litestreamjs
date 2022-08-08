@@ -1,23 +1,21 @@
 import { replicate } from "./replicate";
+import { config } from "./config";
 
-const onExit = async () => {
-  console.log("onExit");
-  await replicate();
-  process.exit(0);
-};
+export const start = async () => {
+  const { replicaUrl, snapshotInterval } = config;
+  if (replicaUrl == null) {
+    throw new Error("replicaUrl is not set");
+  }
 
-type Config = {
-  /**
-   * default: 86400000 (24 hours)
-   */
-  snapshotInterval?: number;
-};
-
-export const start = async ({ snapshotInterval = 86400000 }: Config) => {
   setInterval(async () => {
     await replicate();
   }, snapshotInterval);
 
+  const onExit = async () => {
+    console.log("onExit");
+    await replicate();
+    process.exit(0);
+  };
   process.on("SIGTERM", onExit);
   process.on("SIGINT", onExit);
 };
