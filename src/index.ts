@@ -1,7 +1,3 @@
-import { platform } from "os";
-
-const main = async () => {
-  console.log("os.platform() :>> ", platform());
-};
-
-export default main;
+export { start } from "./start";
+export { replicate } from "./replicate";
+export { restore } from "./restore";

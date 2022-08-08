@@ -1,3 +1,5 @@
-const litestreamjs = require("../dist").default;
+const litestreamjs = require("../dist");
 
-litestreamjs();
+litestreamjs.start({
+  snapshotInterval: 2000,
+});
