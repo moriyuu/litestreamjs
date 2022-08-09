@@ -29,3 +29,7 @@ export const download = async (
   )[0];
   return files;
 };
+
+export const deleteFile = async (bucketName: string, fileName: string) => {
+  await storage.bucket(bucketName).file(fileName).delete();
+};

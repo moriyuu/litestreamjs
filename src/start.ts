@@ -1,15 +1,27 @@
 import { replicate } from "./replicate";
+import { retainer } from "./retainer";
 import { config } from "./config";
+
+const startSnapshotTimer = (snapshotInterval: number) => {
+  setInterval(async () => {
+    await replicate();
+  }, snapshotInterval);
+};
+
+const startRetentionCheckTimer = (retentionCheckInterval: number) => {
+  setInterval(async () => {
+    await retainer();
+  }, retentionCheckInterval);
+};
 
 export const start = async () => {
   if (config == null) {
     throw new Error("config is not set");
   }
-  const { snapshotInterval } = config;
+  const { snapshotInterval, retentionCheckInterval } = config;
 
-  setInterval(async () => {
-    await replicate();
-  }, snapshotInterval);
+  startSnapshotTimer(snapshotInterval);
+  startRetentionCheckTimer(retentionCheckInterval);
 
   const onExit = async () => {
     console.log("onExit ...");

@@ -1,8 +1,11 @@
 {
   "name": "litestreamjs",
-  "version": "1.0.0",
-  "main": "index.js",
+  "version": "0.1.0",
+  "main": "dist/index.js",
   "license": "MIT",
+  "author": {
+    "name": "moriyuu"
+  },
   "scripts": {
     "build": "tsc --outDir dist"
   },

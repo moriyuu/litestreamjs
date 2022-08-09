@@ -3,6 +3,8 @@ const litestreamjs = require("../dist");
 const config = {
   replicaUrl: "gs://litestreamjs-sandbox/sb0809",
   dbPath: "/Users/moriyuu/works/moriyuu/litestreamjs/sandbox/foo2.db",
+  retention: 5000,
+  retentionCheckInterval: 10000, // 10s
   snapshotInterval: 3000,
 };
 

@@ -8,6 +8,10 @@ type Config = {
   /** default: 'db-' */
   replicaNamePrefix: string;
   /** default: 86400000 (24 hours) */
+  retention: number;
+  /** default: 3600000 (1 hour) */
+  retentionCheckInterval: number;
+  /** default: 86400000 (24 hours) */
   snapshotInterval: number;
 };
 
@@ -31,6 +35,8 @@ export const setup = (c: Partial<Config>) => {
     dbPath: c.dbPath,
     replicaUrl: c.replicaUrl,
     replicaNamePrefix: "db-",
+    retention: 86400000,
+    retentionCheckInterval: 3600000,
     snapshotInterval: 86400000,
     ...c,
   };
