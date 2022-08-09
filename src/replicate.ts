@@ -2,15 +2,17 @@ import * as gcs from "./api/gcs";
 import { config } from "./config";
 import { parseUrl } from "./utils";
 
-export const replicate = async () => {
-  const { replicaUrl, replicaNamePrefix } = config;
-  if (replicaUrl == null) {
-    throw new Error("replicaUrl is not set");
+export const replicate = async (): Promise<void> => {
+  if (config == null) {
+    throw new Error("config is not set");
   }
+  const { replicaUrl, dbPath, replicaNamePrefix } = config;
 
   console.log("replicate ...");
+
   const { hostname: bucketName, pathname } = parseUrl(replicaUrl);
-  const filePath = "/Users/moriyuu/works/moriyuu/litestreamjs/sandbox/foo.txt";
   const destination = `${pathname}/${replicaNamePrefix + Date.now()}`;
-  await gcs.upload(bucketName, filePath, destination);
+  await gcs.upload(bucketName, dbPath, destination);
+
+  console.log("replicate ok.");
 };

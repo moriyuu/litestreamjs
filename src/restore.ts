@@ -2,16 +2,22 @@ import * as gcs from "./api/gcs";
 import { config } from "./config";
 import { parseUrl } from "./utils";
 
-export const restore = async () => {
-  const { replicaUrl, replicaNamePrefix } = config;
-  if (replicaUrl == null) {
-    throw new Error("replicaUrl is not set");
+export const restore = async (): Promise<void> => {
+  if (config == null) {
+    throw new Error("config is not set");
   }
+  const { dbPath, replicaUrl, replicaNamePrefix } = config;
 
   console.log("restore ...");
+
   const { hostname: bucketName, pathname } = parseUrl(replicaUrl);
   const prefix = `${pathname}/${replicaNamePrefix}`;
   const files = await gcs.download(bucketName, prefix);
+  if (files.length === 0) {
+    console.log("no files to restore");
+    return;
+  }
+
   const createdAts = files
     .map((file) => parseInt(file.name.split(prefix).pop() || "", 10))
     .filter((n) => !isNaN(n));
@@ -20,5 +26,7 @@ export const restore = async () => {
   if (file == null) {
     throw new Error("file not found");
   }
-  return file;
+  await file.download({ destination: dbPath });
+
+  console.log("restore ok.");
 };

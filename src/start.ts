@@ -2,18 +2,19 @@ import { replicate } from "./replicate";
 import { config } from "./config";
 
 export const start = async () => {
-  const { replicaUrl, snapshotInterval } = config;
-  if (replicaUrl == null) {
-    throw new Error("replicaUrl is not set");
+  if (config == null) {
+    throw new Error("config is not set");
   }
+  const { snapshotInterval } = config;
 
   setInterval(async () => {
     await replicate();
   }, snapshotInterval);
 
   const onExit = async () => {
-    console.log("onExit");
+    console.log("onExit ...");
     await replicate();
+    console.log("onExit ok.");
     process.exit(0);
   };
   process.on("SIGTERM", onExit);

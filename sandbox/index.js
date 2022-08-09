@@ -1,23 +1,26 @@
 const litestreamjs = require("../dist");
 
-const replicaUrl = "gs://litestreamjs-sandbox/sb0809";
-
-const main = async () => {
-  litestreamjs.setup({
-    replicaUrl,
-    snapshotInterval: 2000,
-  });
-
-  // await litestreamjs.replicate();
-  const file = await litestreamjs.restore();
-  console.log("file :>> ", file, file.name);
+const config = {
+  replicaUrl: "gs://litestreamjs-sandbox/sb0809",
+  dbPath: "/Users/moriyuu/works/moriyuu/litestreamjs/sandbox/foo2.db",
+  snapshotInterval: 3000,
 };
 
-main()
-  .then(() => {
-    process.exit(0);
-  })
-  .catch((err) => {
-    console.log(err);
-    process.exit(1);
-  });
+const main = async () => {
+  litestreamjs.setup(config);
+
+  await litestreamjs.replicate();
+  await litestreamjs.restore();
+};
+
+// main()
+//   .then(() => {
+//     process.exit(0);
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//     process.exit(1);
+//   });
+
+litestreamjs.setup(config);
+litestreamjs.start();
